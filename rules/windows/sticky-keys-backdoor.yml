@@ -1,0 +1,23 @@
+title: Sticky Keys Backdoor Implant
+id: 804b173e-7d96-4de7-bb3c-0e5cfddfdf10
+description: Detects unauthorized replacement of sethc.exe, often used for backdooring Windows logon.
+status: experimental
+author: Wojciech Ciemski
+logsource:
+  product: windows
+  service: sysmon
+  category: file_create
+detection:
+  selection:
+    TargetFilename|endswith: '\\sethc.exe'
+    Image|endswith: '\\cmd.exe'
+  condition: selection
+level: high
+tags:
+  - attack.persistence
+  - attack.t1546.008
+  - tldrplus
+falsepositives:
+  - legit script replacements (rare)
+references:
+  - https://attack.mitre.org/techniques/T1546/008/
