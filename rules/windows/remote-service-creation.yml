@@ -1,0 +1,24 @@
+title: Remote Service Creation
+id: 0fc9305e-f89e-4ed0-b24d-c51a2aafef6a
+description: Detects services created remotely on a Windows machine – common during lateral movement or persistence.
+status: stable
+author: Wojciech Ciemski
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 7045
+    ServiceFileName|contains: '\\'
+  condition: selection
+level: high
+tags:
+  - attack.lateral_movement
+  - attack.t1021.002
+  - attack.persistence
+  - tldrplus
+falsepositives:
+  - legitimate remote IT admin tools
+references:
+  - https://attack.mitre.org/techniques/T1021/002/
+  - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-7045
