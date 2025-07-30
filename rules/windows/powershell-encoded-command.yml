@@ -1,0 +1,24 @@
+title: PowerShell Encoded Command Execution
+id: 1b28a4db-73e3-48d9-95ae-9cf62ef132f3
+description: Detects usage of PowerShell's "-EncodedCommand" parameter, often used to obfuscate malicious scripts.
+status: stable
+author: Wojciech Ciemski
+logsource:
+  product: windows
+  service: powershell
+  category: script_block
+detection:
+  selection:
+    ScriptBlockText|contains: '-EncodedCommand'
+  condition: selection
+level: high
+tags:
+  - attack.execution
+  - attack.t1059.001
+  - obfuscation
+  - tldrplus
+falsepositives:
+  - legitimate scripts using encoding (rare)
+references:
+  - https://attack.mitre.org/techniques/T1059/001/
+  - https://docs.microsoft.com/en-us/powershell/scripting/learn/deep-dives/understanding-encodedcommand
