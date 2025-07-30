@@ -1,0 +1,24 @@
+title: Odbcconf DLL Execution for Code Injection
+id: 6af54242-8a1c-41f1-a7e7-6cd1145aeb3f
+description: Detects abuse of odbcconf.exe to load DLLs for arbitrary code execution – known defense evasion trick.
+status: experimental
+author: Wojciech Ciemski
+logsource:
+  product: windows
+  service: sysmon
+  category: process_creation
+detection:
+  selection:
+    Image|endswith: '\\odbcconf.exe'
+    CommandLine|contains:
+      - '/a'
+      - 'dll'
+  condition: selection
+level: high
+tags:
+  - attack.defense_evasion
+  - attack.t1218.008
+falsepositives:
+  - driver registration scripts (low volume)
+references:
+  - https://attack.mitre.org/techniques/T1218/008/
