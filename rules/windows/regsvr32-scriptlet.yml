@@ -1,0 +1,25 @@
+title: Regsvr32 COM Scriptlet Execution
+id: c878ed76-73f8-4078-a6be-50c548d3d9dc
+description: Detects regsvr32.exe used to execute remote or local .sct COM scriptlets.
+status: experimental
+author: Wojciech Ciemski
+logsource:
+  product: windows
+  service: sysmon
+  category: process_creation
+detection:
+  selection:
+    Image|endswith: '\\regsvr32.exe'
+    CommandLine|contains:
+      - '.sct'
+      - 'http://'
+      - 'https://'
+  condition: selection
+level: high
+tags:
+  - attack.defense_evasion
+  - attack.t1218.010
+falsepositives:
+  - legacy automation environments (rare)
+references:
+  - https://attack.mitre.org/techniques/T1218/010/
