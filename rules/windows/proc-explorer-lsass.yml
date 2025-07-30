@@ -1,0 +1,26 @@
+title: Process Explorer LSASS Access
+id: 4c3ef087-daf8-4ad0-8b39-6db74a682ed0
+description: Detects procexp.exe or procexp64.exe accessing LSASS, which can be used to dump credentials.
+status: experimental
+author: Wojciech Ciemski
+logsource:
+  product: windows
+  service: sysmon
+  category: process_access
+detection:
+  selection:
+    EventID: 10
+    SourceImage|endswith:
+      - '\\procexp.exe'
+      - '\\procexp64.exe'
+    TargetImage|endswith: '\\lsass.exe'
+  condition: selection
+level: medium
+tags:
+  - attack.credential_access
+  - attack.t1003.001
+  - tldrplus
+falsepositives:
+  - legitimate debugging
+references:
+  - https://docs.microsoft.com/en-us/sysinternals/downloads/process-explorer
