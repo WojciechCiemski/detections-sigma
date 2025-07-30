@@ -1,7 +1,7 @@
 title: Suspicious LSASS Access
 id: 9f2c7ad1-1a77-41d3-9c25-c3b49a2c54a0
-description: Detects access to lsass.exe memory, commonly used for credential dumping.
-status: experimental
+description: Detects memory access to the LSASS process, typically associated with credential dumping tools like Mimikatz or ProcDump.
+status: stable
 author: Wojciech Ciemski
 logsource:
   product: windows
@@ -19,7 +19,7 @@ tags:
   - tldrplus
 falsepositives:
   - antivirus software
-  - backup tools
+  - backup or monitoring tools
 references:
   - https://attack.mitre.org/techniques/T1003/001/
   - https://docs.microsoft.com/en-us/sysinternals/downloads/procdump
