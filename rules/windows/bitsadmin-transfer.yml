@@ -1,0 +1,25 @@
+title: Bitsadmin File Transfer
+id: 0473e083-9445-4b1e-a399-cfbaaa1e11e5
+description: Detects usage of bitsadmin.exe to transfer files, often used by attackers for C2 or initial access.
+status: experimental
+author: Wojciech Ciemski
+logsource:
+  product: windows
+  service: sysmon
+  category: process_creation
+detection:
+  selection:
+    Image|endswith: '\\bitsadmin.exe'
+    CommandLine|contains:
+      - '/transfer'
+      - '/download'
+      - '/upload'
+  condition: selection
+level: medium
+tags:
+  - attack.command_and_control
+  - attack.t1105
+falsepositives:
+  - patching and internal update tools
+references:
+  - https://attack.mitre.org/techniques/T1105/
