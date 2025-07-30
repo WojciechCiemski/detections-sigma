@@ -1,0 +1,26 @@
+title: Suspicious Rundll32 Execution
+id: 4a7e293b-01e3-4ab1-b949-bec667edfa53
+description: Detects rundll32.exe executing potentially malicious script or payload via suspicious parameters or COM references.
+status: experimental
+author: Wojciech Ciemski
+logsource:
+  product: windows
+  service: sysmon
+  category: process_creation
+detection:
+  selection:
+    Image|endswith: '\\rundll32.exe'
+    CommandLine|contains:
+      - 'javascript:'
+      - 'vbscript:'
+      - 'mshtml.dll'
+      - 'shell32.dll,ShellExec_RunDLL'
+  condition: selection
+level: high
+tags:
+  - attack.defense_evasion
+  - attack.t1218.011
+falsepositives:
+  - software installers using ShellExec_RunDLL
+references:
+  - https://attack.mitre.org/techniques/T1218/011/
