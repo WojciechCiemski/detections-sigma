@@ -1,0 +1,22 @@
+title: InstallUtil Code Execution
+id: dcb405b3-1c8d-478c-8200-880dc6d09b0f
+description: Detects use of installutil.exe to execute custom .NET assemblies, often used to bypass security controls or run malicious code without dropping executables.
+status: experimental
+author: Wojciech Ciemski
+logsource:
+  product: windows
+  service: sysmon
+  category: process_creation
+detection:
+  selection:
+    Image|endswith: '\\installutil.exe'
+  condition: selection
+level: high
+tags:
+  - attack.defense_evasion
+  - attack.t1218.004
+  - sigma.detection
+falsepositives:
+  - developer or admin testing .NET applications
+references:
+  - https://attack.mitre.org/techniques/T1218/004/
