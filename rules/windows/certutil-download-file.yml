@@ -1,0 +1,26 @@
+title: Certutil Used to Download File
+id: 70c2f2b6-2f3d-4fd9-bb13-2011f3ed3ea3
+description: Detects abuse of certutil.exe to download a file from the Internet – a common LOLBin technique.
+status: experimental
+author: Wojciech Ciemski
+logsource:
+  product: windows
+  service: sysmon
+  category: process_creation
+detection:
+  selection:
+    Image|endswith: '\\certutil.exe'
+    CommandLine|contains:
+      - '-urlcache'
+      - 'http://'
+      - 'https://'
+  condition: selection
+level: high
+tags:
+  - attack.defense_evasion
+  - attack.t1105
+  - sigma.detection
+falsepositives:
+  - legitimate certificate operations involving remote files (rare)
+references:
+  - https://attack.mitre.org/techniques/T1105/
