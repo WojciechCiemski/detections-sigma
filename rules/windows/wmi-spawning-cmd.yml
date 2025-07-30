@@ -1,0 +1,24 @@
+title: WMI Process Spawning CMD
+id: 5c871ac9-10b1-44f0-bc7f-94f369f88da9
+description: Detects WMI (WmiPrvSE.exe) spawning cmd.exe, often used in fileless malware or lateral movement.
+status: testing
+author: Wojciech Ciemski
+logsource:
+  product: windows
+  service: sysmon
+  category: process_creation
+detection:
+  selection:
+    ParentImage|endswith: '\\WmiPrvSE.exe'
+    Image|endswith: '\\cmd.exe'
+  condition: selection
+level: medium
+tags:
+  - attack.execution
+  - attack.t1047
+  - attack.t1059
+  - tldrplus
+falsepositives:
+  - IT scripts using WMI
+references:
+  - https://attack.mitre.org/techniques/T1047/
