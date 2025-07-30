@@ -1,0 +1,25 @@
+title: Suspicious LSASS Access
+id: 9f2c7ad1-1a77-41d3-9c25-c3b49a2c54a0
+description: Detects access to lsass.exe memory, commonly used for credential dumping.
+status: experimental
+author: Wojciech Ciemski
+logsource:
+  product: windows
+  service: sysmon
+  category: process_access
+detection:
+  selection:
+    EventID: 10
+    TargetImage: '*\\lsass.exe'
+  condition: selection
+level: high
+tags:
+  - attack.credential_access
+  - attack.t1003.001
+  - tldrplus
+falsepositives:
+  - antivirus software
+  - backup tools
+references:
+  - https://attack.mitre.org/techniques/T1003/001/
+  - https://docs.microsoft.com/en-us/sysinternals/downloads/procdump
