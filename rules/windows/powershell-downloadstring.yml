@@ -1,0 +1,24 @@
+title: PowerShell WebClient or DownloadString Usage
+id: d4cb7a78-71ef-4377-9704-9e6d6817c3c2
+description: Detects PowerShell using DownloadString or WebClient methods to retrieve remote payloads.
+status: experimental
+author: Wojciech Ciemski
+logsource:
+  product: windows
+  service: powershell
+  category: script_block
+detection:
+  selection:
+    ScriptBlockText|contains:
+      - 'DownloadString'
+      - 'System.Net.WebClient'
+      - 'Invoke-WebRequest'
+  condition: selection
+level: high
+tags:
+  - attack.command_and_control
+  - attack.t1105
+falsepositives:
+  - automation scripts using updates or self-installers
+references:
+  - https://attack.mitre.org/techniques/T1105/
