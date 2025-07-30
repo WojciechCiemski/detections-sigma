@@ -1,0 +1,27 @@
+title: Mshta Executing Remote or Embedded Script
+id: 96fd7ad1-3b1f-437a-bc31-6a632482dce2
+description: Detects execution of mshta.exe with arguments pointing to remote URLs or embedded scripts, which is commonly abused for initial access or execution.
+status: experimental
+author: Wojciech Ciemski
+logsource:
+  product: windows
+  service: sysmon
+  category: process_creation
+detection:
+  selection:
+    Image|endswith: '\\mshta.exe'
+    CommandLine|contains:
+      - 'http://'
+      - 'https://'
+      - 'javascript:'
+  condition: selection
+level: high
+tags:
+  - attack.defense_evasion
+  - attack.t1218.005
+  - sigma.detection
+falsepositives:
+  - internal admin scripts invoking mshta for GUI automation
+  - software installation wizards (rare)
+references:
+  - https://attack.mitre.org/techniques/T1218/005/
