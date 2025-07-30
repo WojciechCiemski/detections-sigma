@@ -1,0 +1,32 @@
+title: Browser Spawning System Shell
+id: 37cf3784-b95d-4d77-baf7-67f505f7e1c7
+description: Detects a web browser process (e.g. Chrome, Edge, Firefox) launching a system shell, which may indicate an exploit via drive-by or malicious script.
+status: experimental
+author: Wojciech Ciemski
+logsource:
+  product: windows
+  service: sysmon
+  category: process_creation
+detection:
+  selection_parent:
+    ParentImage|endswith:
+      - '\\chrome.exe'
+      - '\\msedge.exe'
+      - '\\firefox.exe'
+      - '\\iexplore.exe'
+  selection_child:
+    Image|endswith:
+      - '\\cmd.exe'
+      - '\\powershell.exe'
+      - '\\wscript.exe'
+      - '\\cscript.exe'
+  condition: selection_parent and selection_child
+level: high
+tags:
+  - attack.execution
+  - attack.t1203
+  - sigma.detection
+falsepositives:
+  - browser-based tools or plugins calling interpreters (uncommon)
+references:
+  - https://attack.mitre.org/techniques/T1203/
