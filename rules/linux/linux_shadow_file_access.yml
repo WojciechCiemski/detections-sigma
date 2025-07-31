@@ -1,0 +1,24 @@
+title: Unauthorized Access to /etc/shadow
+id: 5ddcf2f3-0a42-4379-a3ef-88429f3c00a7
+status: stable
+description: Detects processes attempting to access or read the /etc/shadow file, which contains password hashes. Such behavior is typically associated with credential dumping or reconnaissance.
+author: Wojciech Ciemski
+date: 2025/07/30
+license: MIT
+logsource:
+  product: linux
+  service: auditd
+  category: file_access
+detection:
+  selection:
+    FilePath: '/etc/shadow'
+    Operation|contains:
+      - 'read'
+      - 'open'
+  condition: selection
+falsepositives:
+  - legitimate access by passwd or pam_unix modules (can be tuned by process name)
+level: high
+tags:
+  - attack.credential_access
+  - attack.t1003.008
