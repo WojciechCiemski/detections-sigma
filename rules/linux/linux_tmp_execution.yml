@@ -1,0 +1,24 @@
+title: Execution of Binaries from /tmp Directory
+id: c40d5e4a-2f12-4aef-b4d2-bf13bb69c4b1
+status: test
+description: Detects execution of any binary or script located in /tmp or /var/tmp directories. These directories are often used by malware and attackers as temporary drop zones.
+author: Wojciech Ciemski
+date: 2025/07/30
+license: MIT
+logsource:
+  product: linux
+  service: auditd
+  category: process_creation
+detection:
+  selection:
+    Image|contains:
+      - '/tmp/'
+      - '/var/tmp/'
+  condition: selection
+falsepositives:
+  - custom scripts legitimately run from tmp by sysadmins
+level: high
+tags:
+  - attack.execution
+  - attack.defense_evasion
+  - attack.t1204.002
