@@ -1,0 +1,24 @@
+title: Kernel Module Loaded (insmod/modprobe)
+id: f0b29c3e-2e32-4c43-b0ea-5794b349194d
+status: test
+description: Detects the insertion of Linux kernel modules using insmod or modprobe, often abused by attackers to load rootkits or perform stealth persistence.
+author: Wojciech Ciemski
+date: 2025/07/30
+license: MIT
+logsource:
+  product: linux
+  category: process_creation
+  service: auditd
+detection:
+  selection:
+    Image|endswith:
+      - '/insmod'
+      - '/modprobe'
+  condition: selection
+falsepositives:
+  - legitimate driver installation
+level: high
+tags:
+  - attack.defense_evasion
+  - attack.persistence
+  - attack.t1547.006
