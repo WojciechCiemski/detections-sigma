@@ -1,0 +1,24 @@
+title: Netcat Listener Detected
+id: 5b18747a-d83c-405e-a54a-1f2521242f13
+status: test
+description: Detects usage of netcat (nc) in listener mode, which may be used by attackers for reverse shells or simple backdoors.
+author: Wojciech Ciemski
+date: 2025/07/30
+license: MIT
+logsource:
+  product: linux
+  category: process_creation
+  service: auditd
+detection:
+  selection:
+    Image|contains: 'nc'
+    CommandLine|contains:
+      - '-l'
+      - '--listen'
+  condition: selection
+falsepositives:
+  - legitimate use during debugging or pentesting labs
+level: medium
+tags:
+  - attack.command_and_control
+  - attack.t1105
