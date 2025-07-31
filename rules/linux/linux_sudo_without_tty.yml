@@ -1,0 +1,22 @@
+title: Sudo Usage Without TTY (Potential Privilege Escalation)
+id: 10e84df4-e177-453f-9e7c-2a3e08e9c818
+status: test
+description: Detects sudo command executions without a terminal (no TTY), which may indicate misuse in automated scripts or malicious privilege escalation without user visibility.
+author: Wojciech Ciemski
+date: 2025/07/30
+license: MIT
+logsource:
+  product: linux
+  service: auth
+  category: process_creation
+detection:
+  selection:
+    Image|contains: 'sudo'
+    Message|contains: 'no tty'
+  condition: selection
+falsepositives:
+  - legitimate automation scripts (e.g., Ansible)
+level: medium
+tags:
+  - attack.privilege_escalation
+  - attack.t1548.003
