@@ -1,0 +1,26 @@
+title: Suspicious Shell Execution via Cron
+id: b392cf60-96fc-4b48-b44a-9fbcac1c52f2
+status: test
+description: Detects execution of suspicious shells (e.g., /bin/bash, /bin/sh) triggered via cron jobs or crontab entries, often used in persistence techniques.
+author: Wojciech Ciemski
+date: 2025/07/30
+license: MIT
+logsource:
+  product: linux
+  service: syslog
+detection:
+  selection:
+    Image|endswith:
+      - '/bash'
+      - '/sh'
+    ParentImage|contains:
+      - '/cron'
+      - 'crond'
+  condition: selection
+falsepositives:
+  - legitimate scheduled jobs using shell wrappers
+level: medium
+tags:
+  - attack.persistence
+  - attack.execution
+  - attack.t1053.003
